@@ -1,0 +1,129 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+%\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+%\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=25mm,
+ bottom=25mm
+ }
+
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{enumerate}
+\usepackage{arcs}
+\usepackage{cancel}
+\usepackage{xfrac}
+\usepackage{amsthm}
+\usepackage{gensymb}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{fancyvrb}
+\usepackage{fontawesome}
+
+
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{inconsolata}
+
+\newtcblisting[auto counter]{sexylisting}[2][]{sharp corners, 
+    fonttitle=\bfseries, colframe=gray, listing only, 
+    listing options={basicstyle=\ttfamily,language=java}, 
+    title=Listing \thetcbcounter: #2, #1}
+
+%\usepackage{ctex}
+
+%SetFonts
+
+%SetFonts
+
+\usepackage[inline]{asymptote}
+
+
+\usepackage[framemethod=tikz]{mdframed}
+
+\newtheorem{example}{Example}
+\mdfdefinestyle{examp}{
+  linecolor=cyan,
+  backgroundcolor=yellow!20
+  % , rotatebox
+}
+\surroundwithmdframed[style=examp]{example}
+
+\usepackage{environ}
+\NewEnviron{Example}
+{%
+\noindent
+\begin{minipage}[t]{\linewidth}
+\begin{example}
+\BODY
+\end{example}%
+\end{minipage}%
+}%
+
+\newtheorem*{solution}{Solution}
+\mdfdefinestyle{sol}{
+  linecolor=red,
+  % , rotatebox
+}
+\surroundwithmdframed[style=sol]{solution}
+
+\usepackage{environ}
+\NewEnviron{Solution}
+{%
+\noindent
+\begin{minipage}[t]{\linewidth}
+\begin{solution}
+\BODY
+\end{solution}%
+\end{minipage}%
+}%
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\cfoot{\thepage}
+
+\title{Background Bibliography Research on Underwater Acoustic Communication}
+\author{Zifei (David) Zhong}
+\date{CSCE 774, Fall 2023}							% Activate to display a given date or no date
+
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\begin{document}
+\maketitle
+
+Underwater acoustic communication is a method of transmitting data through water using acoustic waves. It is commonly used for various applications, including underwater navigation, oceanography, marine biology, and offshore communication. 
+
+Many research work has been carried out on analyzing the characteristics of the underwater acoustic communication channels. Stojanovic et al.\cite{channelchar09} gave a tutorial overview of the underwater acoustic channel properties, aiming to reveal those aspects of acoustic propagation that are relevant for the design of communication systems. They discussed problems including attenuation and noise, multipath propagation, and the Doppler effect. Stojanovic et al.\cite{capdist07} also provided analysis on the relationship between capacity and distance in an underwater acoustic communication channel. In their work, a simple model of a time-invariant acoustic channel was considered, taking into account the physical laws of acoustic propagation and the ambient noise. The bandwidth, capacity, and transmission power needed to achieve a pre-specified SNR were evaluated analytically as functions of distance.  Qarabaqi et al.\cite{qarabaqi2013stats} developed a statistical channel model which incorporates physical laws of acoustic propagation and the effects of inevitable random local displacements.
+
+However, experiments suggested that acoustic communication is much more complicated in reality.  Walree et al.\cite{van2013prop} reported systematic measurements which characterized acoustic propagation channels for applications in the field of underwater communications. Their measurements revealed a large diversity of propagation effects and scattering conditions in candidate acoustic communication channels, defying any attempt to define a typical acoustic communication channel. Yang et al.\cite{shallowwater12} analyzed at-sea data collected in shallow water under various conditions and suggested that the ocean environments could affect the signal properties significantly. 
+
+On the journey of developing acoustic communication techniques, Rouseff et al.\cite{passivephase01} proposed a method for coherent underwater acoustic communication called passive phase conjugation, Edelmann et al. \cite{timereversal02} demonstrated underwater communication using a time reversal mirror, and the Office of Naval Research made a significant investment in funding multiple programs in acoustic communication\cite{growth09}, aiming to improve communication throughput, better power efficiency, etc. In the meantime, the design and development of acoustic modems progressed rapidly\cite{modem21} with various parameters in implementation: operating range, data-rate, modulation schemes, center frequency, bandwidth, power consumption, bit error rates, etc. Researchers also proposed other underwater communication techniques including optical wireless communication\cite{optical2016underwater} and communication through magnetic induciton\cite{magnetic15}.
+
+Synchronization is an important issue in underwater communication. Zhang et al.\cite{syncreceiver09} developed a method for acoustic time synchronization suitable for use in reverberant multipath environments. Their scheme uses two identical broadband synchronization pulses for the acquisition, which is motivated by passive phase conjugation. Zhang et al.\cite{jiaolong19} proposes an emergency resynchronizing method for two synchronous clocks, used by the ultrashort baseline, in the Jiaolong deep-sea manned submersible. Babu et al.\cite{synctech23} reviewed techniques proposed in the literature for frame synchronization, frequency and phase synchronization, and timing synchronization in single carrier communications.
+
+Research trends on underwater communication includes underwater robot communication\cite{commtrend23}, water-air communication\cite{ref:amphilight20}, \cite{ref:sunflower22}, \cite{waterair18}, \cite{aman2022underwater}, and underwater backscatter networking\cite{ref:backscatter23}, \cite{ref:vanatta23}, \cite{backscatter19}, \cite{wideband20}. Li et al.\cite{commtrend23} suggested that underwater robot communication aimed to reducing the cost of devices, designing realistic communication models, and including those models in robot planning. Regarding water-air communication, Carver et al.\cite{ref:amphilight20} proposed a bidirectional, direct air-water wireless communication link based on laser light, and Tonolini et al.\cite{waterair18} proposed to decode the acoustic waves on the water surface via an FMCW-based mmWave radar in the air. Underwater backscatter networking has emerged in recent years, and Eid et al.\cite{ref:vanatta23} designed the Van Atta Acoustic Backscatter (VAB) technology which was claimed to achieve a communication range that exceeds 300m in round trip backscatter under water.
+
+In conclusion, underwater acoustic communication represents a dynamic field with a rich history of research and a promising future. Advancements in channel analysis, synchronization, and innovative techniques are propelling the field forward, enabling applications across diverse domains and promoting a deeper understanding of our underwater world.
+
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{reference}
+
+\end{document} 
