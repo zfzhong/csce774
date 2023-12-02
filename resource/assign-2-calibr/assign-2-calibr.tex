@@ -1,0 +1,117 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+%\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+%\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=25mm,
+ bottom=25mm
+ }
+
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{enumerate}
+\usepackage{arcs}
+\usepackage{cancel}
+\usepackage{xfrac}
+\usepackage{amsthm}
+\usepackage{gensymb}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{fancyvrb}
+\usepackage{fontawesome}
+
+
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{inconsolata}
+
+\newtcblisting[auto counter]{sexylisting}[2][]{sharp corners, 
+    fonttitle=\bfseries, colframe=gray, listing only, 
+    listing options={basicstyle=\ttfamily,language=java}, 
+    title=Listing \thetcbcounter: #2, #1}
+
+%\usepackage{ctex}
+
+%SetFonts
+
+%SetFonts
+
+\usepackage[inline]{asymptote}
+
+
+\usepackage[framemethod=tikz]{mdframed}
+
+\newtheorem{example}{Example}
+\mdfdefinestyle{examp}{
+  linecolor=cyan,
+  backgroundcolor=yellow!20
+  % , rotatebox
+}
+\surroundwithmdframed[style=examp]{example}
+
+\usepackage{environ}
+\NewEnviron{Example}
+{%
+\noindent
+\begin{minipage}[t]{\linewidth}
+\begin{example}
+\BODY
+\end{example}%
+\end{minipage}%
+}%
+
+\newtheorem*{solution}{Solution}
+\mdfdefinestyle{sol}{
+  linecolor=red,
+  % , rotatebox
+}
+\surroundwithmdframed[style=sol]{solution}
+
+\usepackage{environ}
+\NewEnviron{Solution}
+{%
+\noindent
+\begin{minipage}[t]{\linewidth}
+\begin{solution}
+\BODY
+\end{solution}%
+\end{minipage}%
+}%
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\cfoot{\thepage}
+
+\title{Assignment 2: Camera Calibration}
+\author{Zifei (David) Zhong}
+\date{CSCE 774, Fall 2023}							% Activate to display a given date or no date
+
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\begin{document}
+\maketitle
+
+\section{Using the Kalibr Package}
+With Ubuntu 20.04 operating system, we installed ROS noetic and Docker 24.0.7. It took me a while to get docker running properly. The following is my docker information
+\begin{verbatim}
+>>>  docker version
+\end{verbatim}
+
+\section{Performing Camera Calibration Online}
+
+
+\end{document} 
