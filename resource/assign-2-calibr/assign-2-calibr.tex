@@ -29,12 +29,12 @@
 \usepackage{xspace}
 \usepackage{hyperref}
 \usepackage{fancyvrb}
-\usepackage{fontawesome}
+%\usepackage{fontawesome}
 
 
 \usepackage{listings}
 \usepackage[most]{tcolorbox}
-\usepackage{inconsolata}
+%\usepackage{inconsolata}
 
 \newtcblisting[auto counter]{sexylisting}[2][]{sharp corners, 
     fonttitle=\bfseries, colframe=gray, listing only, 
@@ -106,9 +106,64 @@
 \maketitle
 
 \section{Using the Kalibr Package}
-With Ubuntu 20.04 operating system, we installed ROS noetic and Docker 24.0.7. It took me a while to get docker running properly. The following is my docker information
+With Ubuntu 20.04 operating system, we installed ROS noetic and Docker 24.0.7.
+
+\subsection{Docker Installation}
+It took me a while to get Docker running properly. I mostly followed the installation instructions from the Docker project website. The following is my docker information
 \begin{verbatim}
 >>>  docker version
+Client: Docker Engine - Community
+ Cloud integration: v1.0.35+desktop.5
+ Version:           24.0.7
+ API version:       1.41 (downgraded from 1.43)
+ Go version:        go1.20.10
+ Git commit:        afdd53b
+ Built:             Thu Oct 26 09:08:01 2023
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server:
+ Engine:
+  Version:          20.10.24
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.20.7
+  Git commit:       5d6db84
+  Built:            Wed Aug 23 20:55:00 2023
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          v1.6.20
+  GitCommit:        2806fc1057397dbaeefbea0e4e17bddfbd388f38
+ runc:
+  Version:          1.1.5
+  GitCommit:        
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+\end{verbatim}
+
+\subsection{Troubleshooting}
+Once the Docker is installed, the communication might not work properly. In my case, I kept getting the following error message while running \verb+kalibr+:
+\begin{verbatim}
+...
+_tkinter.TclError: couldn't connect to display ":0" 
+\end{verbatim}
+
+After searching on Google and trying different patches for several hours, I finally got the right solution by asking ChatGPT: adding the \verb+--net=host+ arguments to the command \verb+docker run+
+\begin{verbatim}
+docker run -it --net=host -e "DISPLAY" -e "QT_X11_NO_MITSHM=1" \
+           -v "/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+           -v "$FOLDER:/data" kalibr
+\end{verbatim}
+
+\subsection{Generating Reports}
+Run the following command for the three ROS bag files provided, I got three reports generated.
+\begin{verbatim}
+rosrun kalibr kalibr_calibrate_cameras --bag /data/GX010181.bag \
+              --target /data/aprilgrid_5x7Canvas.yml \
+              --models pinhole-radtan \
+              --topics /gopro/image_raw/compressed
 \end{verbatim}
 
 \section{Performing Camera Calibration Online}
