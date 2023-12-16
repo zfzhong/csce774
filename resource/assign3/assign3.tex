@@ -1,0 +1,279 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+%\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+%\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=25mm,
+ bottom=25mm
+ }
+
+\usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{enumerate}
+\usepackage{arcs}
+\usepackage{cancel}
+\usepackage{xfrac}
+\usepackage{amsthm}
+\usepackage{gensymb}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{fancyvrb}
+%\usepackage{fontawesome}
+
+
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+%\usepackage{inconsolata}
+
+\newtcblisting[auto counter]{sexylisting}[2][]{sharp corners, 
+    fonttitle=\bfseries, colframe=gray, listing only, 
+    listing options={basicstyle=\ttfamily,language=java}, 
+    title=Listing \thetcbcounter: #2, #1}
+
+%\usepackage{ctex}
+
+%SetFonts
+
+%SetFonts
+
+\usepackage[inline]{asymptote}
+
+
+\usepackage[framemethod=tikz]{mdframed}
+
+\newtheorem{example}{Example}
+\mdfdefinestyle{examp}{
+  linecolor=cyan,
+  backgroundcolor=yellow!20
+  % , rotatebox
+}
+\surroundwithmdframed[style=examp]{example}
+
+\usepackage{environ}
+\NewEnviron{Example}
+{%
+\noindent
+\begin{minipage}[t]{\linewidth}
+\begin{example}
+\BODY
+\end{example}%
+\end{minipage}%
+}%
+
+\newtheorem*{solution}{Solution}
+\mdfdefinestyle{sol}{
+  linecolor=red,
+  % , rotatebox
+}
+\surroundwithmdframed[style=sol]{solution}
+
+\usepackage{environ}
+\NewEnviron{Solution}
+{%
+\noindent
+\begin{minipage}[t]{\linewidth}
+\begin{solution}
+\BODY
+\end{solution}%
+\end{minipage}%
+}%
+
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\cfoot{\thepage}
+
+\title{Assignment 3: The Robust Visual Inertial Odometry (ROVIO) Framework}
+\author{Zifei (David) Zhong}
+\date{CSCE 774, Fall 2023}					
+
+\newcommand{\latex}{\LaTeX\xspace}
+
+
+\begin{document}
+\maketitle
+The purpose of this assignment is to install and make the ROVIO
+(Robust Visual Inertial Odometry) framwork work with datasets provided
+by this class.
+
+\section{System Environment}
+Since the system environment signficantly affects the building and
+running of the ROVIO package, I here list the system environment in
+Table~\ref{tab.sys}. 
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    System/Software & Version \\
+    \hline
+    \hline
+    Operating System & Ubuntu 22.04 \\
+    \hline
+    ROS & Noetic \\
+    \hline
+    Python & 3.8 \\
+    \hline 
+  \end{tabular}
+  \caption{System Environment}
+  \label{tab.sys}
+\end{table}
+
+\section{Environment Setup}
+It could take several days to get the system environment setup
+successfully. Here I provide the setup steps so that this report can
+be used as a reference in the future to facilite setting up system
+environment.
+
+\subsection{Step 1: Python Virtual Environment}
+Setup Python virtual environment so that the environment is
+independent for this project.
+
+\begin{verbatim}
+sudo apt install python3.8-venv
+python3 -m venv tutorial_env
+source tutorial_env/bin/activate
+\end{verbatim}
+
+
+\subsection{Step2 2: Install ROS Noetic}
+Install ROS Noetic ollowing the installation guide from this web:\\
+\verb+http://wiki.ros.org/noetic/Installation/Ubuntu+
+
+After successfully installing ROS Noetic, we need to make sure that
+\verb+catkin build+ works well on our system. Following the
+instructions on this web to build a workspace:\\
+\verb+https://catkin-tools.readthedocs.io/en/latest/verbs/catkin_build.html+
+
+
+\begin{verbatim}
+export ROS_DISTRO=noetic                                 # Set ROS distribution
+mkdir -p ros_tutorials_ws/src                            # Create workspace
+cd ros_tutorials_ws/src                                  # Navigate to source space
+rosinstall_generator --deps ros_tutorials > .rosinstall  # Get list of packages
+wstool update                                            # Checkout all packages
+cd ros_tutorials_ws                                # Navigate to ros workspace root
+catkin init                                        # Initialize workspace
+catkin build                                       # Build workspace
+\end{verbatim}
+
+Once you see the following messages, the build is successful.
+\begin{verbatim}
+[build] Summary: All 40 packages succeeded!
+[build]   Ignored:   None.
+[build]   Warnings:  None.
+[build]   Abandoned: None.
+[build]   Failed:    None.
+[build] Runtime: 2 minutes and 53.9 seconds total.
+[build] Note: Workspace packages have changed, please re-source setup
+        files to use them.
+\end{verbatim}
+
+There are totally 40 packages to be built. If you build these 40
+packages successuflly, your system setup is completed. This will save
+us a great amount to time to build the ROVIO packages.
+
+\subsection{Step 3: Install Rovio/Kindr}
+Get ROVIO source code from this git repo:\\
+\begin{verbatim}
+https://github.com/ethz-asl/rovio
+\end{verbatim}
+and follow the link from the web to get code for ``kindr''.
+
+\begin{verbatim}
+cd tutorial_env/src
+git clone git@github.com:ethz-asl/kindr.git
+git clone git@github.com:ethz-asl/rovio.git
+
+cd tutorial_env/src/rovio
+git submodule update --init --recursive
+
+cd tutorial_env/src
+catkin build rovio --cmake-args -DCMAKE_BUILD_TYPE=Release -DMAKE_SCENE=ON
+\end{verbatim}
+
+We got several errors while building \verb+rovio+. We provided
+solutions to fixing these errors in the Troublshooting section.
+
+\section{Troubleshooting}
+\subsection{Build Error 1}
+When \verb+catkin build+ the workspace, we encountered the following
+problem:
+\begin{verbatim}
+/usr/bin/ld: src.c:(.text+0x63): undefined reference to `pthread_join'
+collect2: error: ld returned 1 exit status
+\end{verbatim}
+To solve the above problem, do
+\begin{verbatim}
+pip3 install git+https://github.com/catkin/catkin_tools.git
+\end{verbatim}
+
+\subsection{Build Error 2}
+Most likely you will also experience the following problems as I did:
+\begin{verbatim}
+can't find '__main__' module in '.../lib/python3/dist-packages/em'
+\end{verbatim}
+
+or
+\begin{verbatim}
+AttributeError: 'module' object has no attribute 'RAW_OPT'
+\end{verbatim}
+
+To solve the above problems, do
+\begin{verbatim}
+pip3 uninstall em
+pip3 install empy==3.34
+\end{verbatim}
+
+Since we have a virtual enviroment, the installing/uninstalling
+packages only affects our virtual environment. It would not affect
+other projects on our computer, neither would it affected by the
+packages we installed for other projects.
+
+\subsection{Build Error 3}
+We got the following error when doing catkin build for rovio:
+\begin{verbatim}
+.../rovio/ImgUpdate.hpp:590:68: error: ‘CV_GRAY2RGB’ was not declared in this scope
+  590 | cvtColor(meas.aux().pyr_[i].imgs_[0], filterState.img_[i], CV_GRAY2RGB);
+\end{verbatim}
+
+The fix is to edit the line 590 of file \verb+ImgUpdate.hpp+, changing
+it to:
+\begin{verbatim}
+#if (CV_VERSION_MAJOR >= 4)
+cvtColor(meas.aux().pyr_[i].imgs_[0], filterState.img_[i], cv::COLOR_GRAY2RGB);
+#else
+cvtColor(meas.aux().pyr_[i].imgs_[0], filterState.img_[i], CV_GRAY2RGB);
+#endif
+\end{verbatim}
+The reason was that we had \verb+libopencv+ 4.2 in our Ubuntu system.
+
+
+\subsection{Build Error 4}
+We also got the following error when building \verb+rovio+:
+\begin{verbatim}
+...
+/usr/bin/ld: .../librovio.so: undefined reference to `__glewUniformMatrix4fv'
+/usr/bin/ld: .../librovio.so: undefined reference to `__glewUniform1i'
+/usr/bin/ld: .../librovio.so: undefined reference to `__glewAttachShader'
+/usr/bin/ld: .../librovio.so: undefined reference to `__glewCreateShader'
+/usr/bin/ld: .../librovio.so: undefined reference to `glewInit'
+collect2: error: ld returned 1 exit status
+\end{verbatim}
+
+The fix is to search for  \verb+${GLEW_LIBRARY}+  in the file
+\verb+../src/rovio/CMakeLists.txt+, and then change it to
+\verb+${GLEW_LIBRARIES}+.
+\end{document} 
